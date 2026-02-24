@@ -1,0 +1,36 @@
+---
+title: Getting started
+description: Welcome to the Orbital Docs
+sidebar:
+  order: 1
+---
+import { LinkCard } from '@astrojs/starlight/components';
+
+Welcome to the Orbital Docs! Here you will find all codebase-related documentation.
+
+:::caution
+These docs are a work in progress. Not everything may be documented yet. If you need something and can't find it, please mention it on our Discord server so we can add it!
+:::
+
+## About the team
+> UW Orbital is a student design team at the University of Waterloo participating in the Canadian Satellite Design Challenge (CSDC) - a competition held every two years and involving a dozen universities from across Canada. Teams design a 3U CubeSat with unique missions and payloads and undergo launch readiness evaluations such as vibration testing. The winning team earns the opportunity to have its launch costs funded by the competition.
+
+**You can find out more on our site:** [https://www.uworbital.com](https://www.uworbital.com)
+
+## What software does
+Software is a subteam of Orbital consisting of two major code projects: the ground station and the satellite.
+
+Ground station related code includes frontends that operators can interact with as well as software that interfaces with the satellite. The ground station stack is primarily built with Python and React.
+
+The satellite related code includes firmware for the onboard computer (OBC) and electrical systems, such as the BMS (Battery Management System). This is a major part of the codebase and allows the software team to support the work of the mechanical and electrical subteams.
+
+## Suggested guides
+Don't know where to go first? Try one of the following links!
+
+<LinkCard title="Initial setup" href="/OBC-firmware/start-here/initial-setup/" />
+<LinkCard title="Building the OBC firmware" href="/OBC-firmware/builds/build-obc/" />
+<LinkCard title="Building the ground station" href="/OBC-firmware/builds/build-gs/" />
+<LinkCard title="Style guide" href="/OBC-firmware/start-here/style-guide/" />
+<LinkCard title="File structure overview" href="/OBC-firmware/start-here/file-structure/" />
+
+<br />Happy coding! 🚀

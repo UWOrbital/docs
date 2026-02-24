@@ -1,0 +1,113 @@
+---
+title: Initial setup
+description: Initial setup for your development workflow
+sidebar:
+  order: 2
+---
+import { Steps } from '@astrojs/starlight/components';
+
+This guide walks you through the process of setting up your development environment.
+
+## Windows
+:::caution
+**Windows is not supported for firmware and ground station development.**
+
+If you are using Windows, you will need to install Windows Subsystem for Linux (WSL). WSL lets you run a complete Linux environment directly inside Windows without virtual machine overhead or dual booting.
+
+After installing WSL, continue to the [Linux/WSL](#linuxwsl) section of the guide.
+:::
+
+### WSL installation
+
+Follow Microsoft's official guide to install WSL: https://learn.microsoft.com/en-us/windows/wsl/install. Make sure you install the latest Ubuntu distribution for consistency (this should be the default). You can use another distribution, but note that some steps may differ, most notably package installation.
+
+:::tip
+For command-line work, it's recommended to use **Windows Terminal** (in Windows, it's just called **Terminal**). Despite being a built-in Microsoft app, it's surprisingly powerful and intuitive. Use Windows Terminal to access WSL and run any command-line tasks.
+
+You can also work with WSL in VS Code. To open VS Code in WSL, install the WSL extension, then either run `code .` from a WSL directory or use the Remote Explorer in VS Code.
+:::
+
+:::caution
+Clone the repository and do all work in the Linux home directory (e.g. `~/projects/OBC-firmware`). Don't store your code on Windows and access it via the `mnt` directory. This will help with performance and compatibility.
+:::
+
+## Linux/WSL
+
+### Standard setup
+
+<Steps>
+1. Ensure you have Git installed. If you are using Ubuntu 24.04 LTS or later, or installed the default WSL distribution, you should already have it installed.
+If not, open a terminal and run the following commands to install Git:
+
+    ```shell
+    sudo apt update
+    sudo apt install git
+    ```
+
+2. Run the following command in a directory of your choice to clone the repository:
+    ```shell
+    git clone https://github.com/UWOrbital/OBC-firmware.git
+    ```
+
+3. Install our required tools:
+
+    ```shell
+    sudo apt update
+    sudo apt install -y build-essential gcc-multilib g++-multilib cmake curl
+    ```
+
+4. Install Python 3.11+. If you are using Ubuntu 24.04 LTS or later, or installed the default WSL distribution, you should already have a compatible version of Python installed.
+
+    ```shell
+    sudo apt install python3
+    ```
+    
+    Check your installed Python version with:
+    ```shell
+    python3 --version
+    ```
+    If it's 3.11 or higher, you're good.
+
+5. Install the Python virtual environment:
+
+    ```shell
+    sudo apt install python3-venv
+    ```
+
+6. Setup your virtual environment by running the following commands in the repository's root directory (the `OBC-firmware` folder):
+
+    ```shell
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    pip install -e .
+
+7. Setup the pre-commit by running the following command in the repository's root directory:
+
+    ```shell
+    pre-commit install
+    ```
+
+</Steps>
+
+### Ground station (optional)
+If you'll also be working on the ground station, complete these extra steps:
+<Steps>
+1. Install `nvm`:
+
+    ```shell
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    ```
+
+2. Restart your shell or run `source ~/.bashrc` (only works on Bash).
+
+3. Install Node.js v22:
+    ```shell
+    nvm install 22
+    # Verify the Node.js version
+    node -v
+    ```
+
+4. Set up the PostgreSQL database with the [Database setup](/OBC-firmware/start-here/database-setup) guide.
+</Steps>
+

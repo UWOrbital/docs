@@ -1,0 +1,56 @@
+---
+title: Building the ground station
+description: On how to build for ground station
+sidebar:
+  order: 3
+---
+import { Steps } from '@astrojs/starlight/components';
+
+The following guide outlines a procedure to build the ground station.
+
+## Compiling for the ground station
+From the root directory, run the following commands:
+```shell
+mkdir -p build_gs && cd build_gs
+cmake .. -DCMAKE_BUILD_TYPE=GS
+cmake --build .
+```
+
+:::tip[Tip: Reducing Build Time]{icon="setting"}
+The `cmake --build .` takes some time to run since it is using a single thread to compile. To speed up the process we can replace it with one of the following commands:
+1. `make -j 16` (Recommended for most systems)
+2. `make -j 32` (This is faster but depends on if your system can handle 32 parallel jobs)
+:::
+
+## Setting up frontend development
+To run the frontend, Node.js must be installed. If it isn't, see [Initial setup](/OBC-firmware/start-here/initial-setup/) and follow it to set up the database as well.
+
+Restart your shell or run `source ~/.bashrc` (only works on Bash).
+
+### Running the ARO frontend
+While in the root directory, run the following commands to start the ARO frontend:
+```shell
+cd gs/frontend/aro
+npm install
+npm run dev
+```
+If you have Docker installed, you can instead run the following command:
+```shell
+docker compose up aro-frontend
+```
+
+After you install new dependencies, you will need to rebuild the container with `docker-compose up --build aro-frontend`.
+
+### Running the MCC frontend
+While in the root directory, run the following commands to start the MCC frontend:
+```shell
+cd gs/frontend/mcc
+npm install
+npm run dev
+```
+If you have Docker installed, you can instead run the following command:
+```shell
+docker compose up mcc-frontend
+```
+
+After you install new dependencies, you will need to rebuild the container with `docker-compose up --build mcc-frontend`.
