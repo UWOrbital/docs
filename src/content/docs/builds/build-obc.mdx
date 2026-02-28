@@ -9,7 +9,7 @@ import { Steps } from '@astrojs/starlight/components';
 The following is a simple guide on building the app for the OBC.
 
 <Steps>
-1. Before compiling, ensure that the Python virtual environment is activated. If you do not have this configured, see [Initial setup](/OBC-firmware/start-here/initial-setup/).
+1. Before compiling, ensure that the Python virtual environment is activated. If you do not have this configured, see [Initial setup](/docs/start-here/initial-setup/).
 2. From the root directory, run the following commands:
     ```shell
     mkdir -p build_arm && cd build_arm
@@ -22,7 +22,7 @@ The following is a simple guide on building the app for the OBC.
     1. `make -j 16` (Recommended for most systems)
     2. `make -j 32` (This is faster but depends on if your system can handle 32 parallel jobs)
     :::
-3. There are also plenty of extra options that you can use besides `-DCMAKE_BUILD_TYPE` by appending them to the `cmake ..` command. Take a look at the [CMake options guide](/OBC-firmware/builds/cmake-options/).
+3. There are also plenty of extra options that you can use besides `-DCMAKE_BUILD_TYPE` by appending them to the `cmake ..` command. Take a look at the [CMake options guide](/docs/builds/cmake-options/).
 
     :::caution
     Make sure to specify the `-DBOARD_TYPE=` option to avoid any unwanted behaviour.
