@@ -1,0 +1,31 @@
+---
+title: Working with commands
+description: How to work with the command interface on the backend
+---
+import { Steps } from '@astrojs/starlight/components';
+
+If you came to this doc you are either trying to make all the `pytests` pass or you are working with commands! In both cases we will have to initialize and build the `interfaces` submodule that is found in `backend/interfaces`. As the name suggests, this folder acts as an interface between the backend and the firmware on the satellite, ensuring that all protocols used for communication between the Ground Station's backend and satellite are the same!
+
+## Pre-requisites
+- You have `cmake` and a c-compiler installed
+
+## Getting `interfaces` to work 
+<Steps>
+1. From your repository root, let's initialize the submodule with the following command:
+    ```shell 
+    git submodule update --init --recursive
+    ```
+
+2. Navigate to `backend/interfaces` from root and create a `build/` directory with the following commands: 
+    ```shell
+    cd backend/interfaces
+    mkdir build/
+    ```
+3. Configure and build the interfaces with `cmake` in the `build/` directory using the following commands:
+    ```shell
+    cd build 
+    cmake .. 
+    make -j 16
+    ```
+4. When you use the command `ls` to list out directories you should see a `libobc-gs-interface.so` file. This is called a **Shared Object** file and it contains a **shared library** that the ground station has python wrappers for. You can see these wrappers in the `backend/interfaces/obc_gs_interface/commands/python` as well in some other directories in `interfaces`. Anyways, now your `pytests` should run as intended and you can work with commands!
+</Steps>
