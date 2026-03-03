@@ -1,0 +1,69 @@
+---
+title: Firmware Setup
+description: Initial setup for your development workflow
+sidebar:
+  order: 1
+---
+import { Steps } from '@astrojs/starlight/components';
+
+The following assumes that you have already read [Initial Setup](/docs/start-here/initial-setup) guide. The guides are only written for **Linux/WSL**. If you have a mac, you may need to ask a lead for a separate setup.
+
+## Pre-requisites
+- You have git installed and configured
+- You have WSL setup 
+- If using WSL, you are working from a directory in the **WSL home directory**, not a directory that contains `/mnt/` in it's filename
+
+## Getting Setup
+:::caution
+Firmware is getting a little bit of an overhaul soon, so these steps are prone to change, they are up to date as of March, 3rd, 2025.
+:::
+
+<Steps>
+1. Run the following command in a directory of your choice to clone the repository:
+    ```shell
+    # if you are using https (common)
+    git clone https://github.com/UWOrbital/orbital-software.git
+
+    # or if you are using SSH 
+    git clone git@github.com:UWOrbital/orbital-software.git
+    ```
+
+2. Install our required tools:
+
+    ```shell
+    sudo apt update
+    sudo apt install -y build-essential gcc-multilib g++-multilib cmake curl
+    ```
+
+3. Install Python 3.11+. If you are using Ubuntu 24.04 LTS or later, or installed the default WSL distribution, you should already have a compatible version of Python installed.
+
+    ```shell
+    sudo apt install python3
+    ```
+    
+    Check your installed Python version with:
+    ```shell
+    python3 --version
+    ```
+    If it's 3.11 or higher, you're good.
+
+4. Install the Python virtual environment:
+
+    ```shell
+    sudo apt install python3-venv
+    ```
+
+5. Setup your virtual environment by running the following commands in the repository's root directory (the `orbital-software` folder):
+
+    ```shell
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    pip install -e .
+
+6. Setup the pre-commit by running the following command in the repository's root directory:
+
+    ```shell
+    pre-commit install
+    ```
+</Steps>

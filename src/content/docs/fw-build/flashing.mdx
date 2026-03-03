@@ -2,7 +2,7 @@
 title: Flashing to the OBC
 description: How to flash to the OBC
 sidebar:
-  order: 2
+  order: 3
 ---
 import { Steps } from '@astrojs/starlight/components';
 
@@ -111,10 +111,10 @@ Unfortunately Windows does not pass-through USB ports by default to WSL. Thus, w
 4. Run the app `app_update.py` script specifying a USB port and the absolute file path. The following are some examples.
     ```shell
     # On Linux and WSL
-    python3 app_update.py /dev/ttyS0 ~/OBC-firmware/build_arm/OBC-firmware.bin
+    python3 app_update.py /dev/ttyS0 ~/orbital-software/build_arm/OBC-firmware.bin
 
     # On Linux and WSL
-    python3 app_update.py /dev/ttyUSB0 ~/OBC-firmware/build_arm/OBC-firmware.bin
+    python3 app_update.py /dev/ttyUSB0 ~/orbital-software/build_arm/OBC-firmware.bin
     ```
     :::note
     The bootloader sends messages through the UART port so if the first string that the script displays is not 'Erase Successful' or the script is takes more than 1 second to start, re-run the script. Hopefully this is addressed in the future!

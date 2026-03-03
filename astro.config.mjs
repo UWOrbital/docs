@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
+import starlightSidebarTopics from 'starlight-sidebar-topics'
 
 // https://astro.build/config
 export default defineConfig({
@@ -46,31 +47,69 @@ export default defineConfig({
           label: 'Discord',
           href: 'https://discord.gg/cw2gYKCTYJ',
         }],
-      sidebar: [
-        {
-          label: 'Start Here',
-          autogenerate: { directory: 'start-here' },
-        },
-        {
-          label: 'Build Guides',
-          autogenerate: { directory: 'builds' },
-        },
-        {
-          label: 'Frontend Docs',
-          autogenerate: { directory: 'frontend' },
-        },
-        {
-          label: 'Backend Docs',
-          autogenerate: { directory: 'backend' },
-        },
-        {
-          label: 'Comms Guides',
-          autogenerate: { directory: 'comms' },
-        },
-        {
-          label: 'FreeRTOS Tasks',
-          autogenerate: { directory: 'tasks' },
-        },
+      plugins: [
+        starlightSidebarTopics([
+          {
+            label: 'Workflow',
+            link: '/start-here/',
+            icon: 'open-book',
+            items: [
+              {
+                label: 'Start Here',
+                autogenerate: { directory: 'start-here' },
+              },
+            ],
+          },
+          {
+            label: 'Firmware',
+            link: '/fw-build/',
+            icon: 'setting',
+            items: [
+              {
+                label: 'Build Guides',
+                autogenerate: { directory: 'fw-build' },
+              },
+              {
+                label: 'Comms Guides',
+                autogenerate: { directory: 'comms' },
+              },
+              {
+                label: 'FreeRTOS Tasks',
+                autogenerate: { directory: 'tasks' },
+              },
+            ],
+          },
+          {
+            label: 'Ground Station',
+            link: '/gs-setup/',
+            icon: 'laptop',
+            items: [
+              {
+                label: 'Setting up',
+                autogenerate: { directory: 'gs-setup' },
+              },
+              {
+                label: 'Frontend Docs',
+                autogenerate: { directory: 'frontend' },
+              },
+              {
+                label: 'Backend Docs',
+                autogenerate: { directory: 'backend' },
+              },
+            ],
+          },
+          {
+            label: 'Interfaces',
+            link: '/interfaces/',
+            icon: 'rss',
+            items: [
+              {
+                label: 'Interfaces',
+                autogenerate: { directory: 'interfaces' },
+              },
+            ],
+          },
+        ]),
       ],
     }),
   ],

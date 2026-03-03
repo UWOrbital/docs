@@ -1,0 +1,73 @@
+---
+title: Ground Station Setup
+description: Initial setup for your development workflow
+sidebar:
+    order: 1
+---
+import { Steps } from '@astrojs/starlight/components';
+import { LinkCard } from '@astrojs/starlight/components';
+
+The following assumes that you have already read [Initial Setup](/docs/start-here/initial-setup) guide. You should be able to develop from any of the platforms mentioned: Linux, WSL or Mac.
+
+## General Setup
+<Steps>
+1. All our Ground Station code is hosted in the `ground-station` repository on our Github. So let's clone that first. Run the following command in a directory of your choice to clone the repository:
+    ```shell
+    # if you use https (common way of doing git)
+    git clone https://github.com/UWOrbital/ground-station.git
+
+    # or if you use SSH 
+    git clone git@github.com:UWOrbital/ground-station.git
+    ```
+2. Setup the pre-commit by running the following command in the repository's root directory:
+
+    ```shell
+    pre-commit install
+    ```
+3. Now you can follow either the [Backend](#backend-setup) section for Backend setup or the [Frontend](#frontend-setup) for Frontend setup.
+</Steps>
+
+## Backend Setup 
+<Steps>
+1. Be sure to have python version **3.12** installed on your system.
+2. Install a python build tool called `uv`. Instructions can be found [here](https://docs.astral.sh/uv/getting-started/installation/).
+3. From the repository's root run the following command to add all the necessary packages you need.
+    ```shell
+    uv sync
+    ```
+4. If you are working with the database, you should set up Postgres as well. The guide can be found [here](/docs/gs-setup/database-setup).
+5. Just like that you have the backend setup! To do a sanity check try running our test suite for the backend and see if the tests pass. Use the following commands from the root of the respository:
+    ```shell
+    # Activate venv (choose the proper way to activate based on dev environment)
+    source .venv/bin/activate
+
+    # Run Pytest
+    uv run pytest
+    ```
+    :::note
+    These tests take long to run so you can stop them with the shortcut `Ctrl+C`.
+    :::
+</Steps>
+
+## Frontend Setup
+<Steps>
+1. Install Nodejs on your systems using the instructions found [here](https://nodejs.org/en/download). It is recommended you choose the instructions for `Linux` or `macOS` using `nvm`.
+
+2. Go to the website of your choice in the `frontend/` directory: either `aro` or `mcc`. Run the following command to install dependencies:
+    ```shell 
+    npm install
+    ```
+3. To see a preview of the site you can run the following command to see a dev preview:
+    ```shell
+    npm run dev
+    ```
+4. **Alternatively,** if you have docker, run the docker scripts!
+    ```shell
+    docker compose up aro-frontend 
+    docker compose up mcc-frontend
+    ```
+</Steps>
+
+## Contributing 
+Before you get coding and build some amazing skills make sure you understand the task workflow which you can find below!
+<LinkCard title="Task Workflow" href="/docs/start-here/task-workflow/" />
