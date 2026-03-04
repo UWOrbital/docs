@@ -4,7 +4,11 @@ description: How to work with the command interface on the backend
 ---
 import { Steps } from '@astrojs/starlight/components';
 
-If you came to this doc you are either trying to make all the `pytests` pass or you are working with commands! In both cases we will have to initialize and build the `interfaces` submodule that is found in `backend/interfaces`. As the name suggests, this folder acts as an interface between the backend and the firmware on the satellite, ensuring that all protocols used for communication between the Ground Station's backend and satellite are the same!
+If you came to this doc you are either trying to make the interface `pytests` pass or you are working with commands! In both cases we will have to initialize and build the `interfaces` submodule that is found in `backend/interfaces`. As the name suggests, this folder acts as an interface between the backend and the firmware on the satellite, ensuring that all protocols used for communication between the Ground Station's backend and satellite are the same!
+
+:::note 
+The `pytests` for interfaces run only if there is something in your `backend/interfaces` directory. If you don't want them to run, make sure that directory is empty!
+:::
 
 ## Pre-requisites
 - You have `cmake` and a c-compiler installed
