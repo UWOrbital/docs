@@ -35,8 +35,8 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
     ```shell
     uv sync
     ```
-4. If you are working with the database, you should set up Postgres as well. The guide can be found [here](/docs/gs-setup/database-setup).
-5. Just like that you have the backend setup! To do a sanity check try running our test suite for the backend and see if all of them pass. Use the following commands from the root of the respository:
+4. (Highly Recommended) If you are working with the database, you should set up Postgres as well. The guide can be found in the section below this one called Database Setup. 
+5. Hopefully your database is now setup! To do a sanity check try running our test suite for the backend and see if some tests pass (some of them will fail, to get them working refer to [Working with commands](/docs/backend/commands)). Use the following commands from the root of the respository:
     ```shell
     # Activate venv (choose the proper way to activate based on dev environment)
     source .venv/bin/activate
@@ -47,7 +47,73 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
     :::note
     These tests take long to run so you can stop them with the shortcut `Ctrl+C`.
     :::
+
+6. To run the backend from the root repository, and initialize the database (make sure the venv is activated):
+   ```shell
+   fastapi dev backend/main.py
+   ```
+
+7. **Alternatively,** if you have docker, run the docker scripts!
+    ```shell
+    docker-compose -f scripts/dev/docker-compose.yml up --build
+    ```
 </Steps>
+
+## Database Setup
+<Steps>
+1. Open a terminal and run the following commands to install PostgreSQL (make sure you are in the root of the ground-station repository):
+
+    ```shell
+    sudo apt update
+    sudo apt install postgresql-16
+    ```
+
+2. Run `sudo -u postgres psql --version` to ensure PostgreSQL was installed properly. It should print that the major version is 16.
+
+3. Run the following commands to setup PostgreSQL for the ground station.
+    :::caution
+    Make your PostgreSQL username the same as your Linux username.
+    Also, try not to include special characters in your password as it may break connection strings.
+    :::
+
+    ```shell
+    # Connect to PostgreSQL CLI as the postgres superuser
+    sudo -u postgres psql
+    # Replace your_username and your_password with your desired values
+    CREATE USER your_username WITH PASSWORD 'your_password' SUPERUSER;
+    CREATE DATABASE gs;
+    ```
+
+4. Log out, then verify that you can log in to your newly created user and database:
+
+    ```shell
+    \q # Log out
+    # Replace your_username with your actual username
+    psql -U your_username -d gs
+    # You should be logged into the database
+    \q # Log out again
+
+5. From the root directory, run the following commands to create a new `.env` file:
+
+    ```shell 
+    cp ./template.env ./.env
+    ```
+6. Edit the `.env` file to add your login details for the database user you created in Step 3 in the quotes. In Linux/WSL, you can use `vim` or `nano` as the editor.
+
+7. From the root directory, run the following command to initialize your database with the correct schema:
+
+    ```shell
+    sudo apt install alembic
+    # Make sure you are running the venv located in .venv in the root directory
+    source ./.venv/bin/activate
+    cd backend
+    alembic upgrade head
+    # Go back to the root
+    cd ..
+    ```
+   Your database should now be setup! Now you can revisit the Backend Setup section and do the remaining steps (Step 5 and 6)
+</Steps>
+
 
 ## Frontend Setup
 <Steps>
@@ -63,8 +129,7 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
     ```
 4. **Alternatively,** if you have docker, run the docker scripts!
     ```shell
-    docker compose up aro-frontend 
-    docker compose up mcc-frontend
+    docker-compose -f scripts/dev/docker-compose.yml up --build
     ```
 </Steps>
 
