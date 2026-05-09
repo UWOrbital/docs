@@ -1,4 +1,48 @@
 ---
-title: Interfaces
-description: Overview to backend
+title: Developing on the Interfaces Submodule 
+description: Process for working on tasks that require developing on the interfaces submodule
 ---
+import { Steps } from '@astrojs/starlight/components';
+
+:::tip[Tip: Prerequisites]{icon="setting"}
+    The interfaces submodule should already be initialized when setting up the firmware and gs repo. Please revisit the setup guides if it isn't initialized in your local setup [Getting Started](https://uworbital.github.io/docs/start-here/).
+:::
+Using a submodule essentially allows a parent Github repository to add another Github repository (the submodule) as a subdirectory. Essentially, it is a subdirectory which has a separate version control from the parent repository. The benefit of this configuration is that there can be multiple parent repositories that use the submodule, without being a part of the same repository. For example, we were able to split our mono repo which had Firmware and GS files and folders into separate firmware and GS repos that each setup the interfaces submodule. (See https://git-scm.com/book/en/v2/Git-Tools-Submodules for more documentation).
+
+If your task requires editing of the interfaces submodule (for either the GS or Firmware repositories), you will need to follow certain steps for clean and consistent development.
+
+<Steps>
+1. Create a branch in interfaces with the same name as the branch you created for your task in either the Firmware or GS repository. Do this as you normally would for a Github repository.
+	Afterwards, run the following from the root repository, fill in the content inside the squiggly brackets.
+	```shell
+	cd interfaces
+	git fetch origin
+	git checkout {branch-name}
+	```
+	This ensures that all the changes you make in interfaces are tracked for the branch you created.
+
+2. Always commit and push changes to interfaces before committing and pushing changes to either the Firmware or GS repos. This ensures that the parent repo tracks the commit in interfaces corresponding to the changes you made. This will allow the CI/CD to run tests using the interfaces commit you were using in your local setup.
+	Committing changes to a submodule is identical to committing changes to any git repository. Run the following from the root repo.
+	```shell
+	cd interfaces
+	git add {list all files you wish to stage, separated by a space}
+	git commit -m "{put commit message}"
+	git push
+	```
+	This will make a commit for your interfaces branch, and push it to the remote interfaces repository.
+
+3. After making commits in the submodule, you will see an unstaged change when you run git status in the parent repo:
+	```shell
+	(base) adept@Orbitron:~/orbital_repos/OBC-firmware$ git status
+	On branch kashifb/add-interfaces-submodule
+	Your branch is up to date with 'origin/kashifb/add-interfaces-submodule'.
+
+	Changes not staged for commit:
+  	(use "git add <file>..." to update what will be committed)
+  	(use "git restore <file>..." to discard changes in working directory)
+        	modified:   interfaces (new commits)
+
+	no changes added to commit (use "git add" and/or "git commit -a")
+	```
+	Please ensure that you commit the change to interfaces from the parent repo. This will update the tracked commit SHA.
+</Steps>
