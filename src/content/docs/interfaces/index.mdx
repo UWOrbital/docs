@@ -1,11 +1,11 @@
 ---
-title: Developing on the Interfaces Submodule 
+title: Developing on the interfaces submodule 
 description: Process for working on tasks that require developing on the interfaces submodule
 ---
 import { Steps } from '@astrojs/starlight/components';
 
-:::tip[Tip: Prerequisites]{icon="setting"}
-    The interfaces submodule should already be initialized when setting up the firmware and gs repo. Please revisit the setup guides if it isn't initialized in your local setup [Getting Started](https://uworbital.github.io/docs/start-here/).
+:::tip[Prerequisites]{icon="setting"}
+    The interfaces submodule should already be initialized when setting up the Firmware and GS repo. Please revisit [Initial setup](/docs/start-here/initial-setup) if it isn't.
 :::
 Using a submodule essentially allows a parent Github repository to add another Github repository (the submodule) as a subdirectory. Essentially, it is a subdirectory which has a separate version control from the parent repository. The benefit of this configuration is that there can be multiple parent repositories that use the submodule, without being a part of the same repository. For example, we were able to split our mono repo which had Firmware and GS files and folders into separate firmware and GS repos that each setup the interfaces submodule. (See https://git-scm.com/book/en/v2/Git-Tools-Submodules for more documentation).
 

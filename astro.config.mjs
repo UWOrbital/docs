@@ -55,32 +55,36 @@ export default defineConfig({
             icon: 'open-book',
             items: [
               {
-                label: 'Start Here',
+                label: 'Start here',
                 autogenerate: { directory: 'start-here' },
               },
             ],
           },
           {
             label: 'Firmware',
-            link: '/fw-build/',
+            link: '/fw-setup/',
             icon: 'setting',
             items: [
               {
-                label: 'Build Guides',
+                label: 'Setup',
+                autogenerate: { directory: 'fw-setup'},
+              },
+              {
+                label: 'Build guides',
                 autogenerate: { directory: 'fw-build' },
               },
               {
-                label: 'Comms Guides',
+                label: 'Comms guides',
                 autogenerate: { directory: 'comms' },
               },
               {
-                label: 'FreeRTOS Tasks',
+                label: 'FreeRTOS tasks',
                 autogenerate: { directory: 'tasks' },
               },
             ],
           },
           {
-            label: 'Ground Station',
+            label: 'Ground station',
             link: '/gs-setup/',
             icon: 'laptop',
             items: [
@@ -89,11 +93,11 @@ export default defineConfig({
                 autogenerate: { directory: 'gs-setup' },
               },
               {
-                label: 'Frontend Docs',
+                label: 'Frontend docs',
                 autogenerate: { directory: 'frontend' },
               },
               {
-                label: 'Backend Docs',
+                label: 'Backend docs',
                 autogenerate: { directory: 'backend' },
               },
             ],
