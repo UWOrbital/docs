@@ -1,27 +1,22 @@
 ---
-title: Firmware Setup
-description: Initial setup for your development workflow
+title: Firmware setup
+description: Setup for firmware development
 sidebar:
   order: 1
 ---
 import { Steps } from '@astrojs/starlight/components';
 
-The following assumes that you have already read [Initial Setup](/docs/start-here/initial-setup) guide. The guides are only written for **Linux/WSL**. If you have a mac, you may need to ask a lead for a separate setup.
+This guide assumes that you have already read [Initial Setup](/docs/start-here/initial-setup).
 
-## Pre-requisites
-- You have git installed and configured
-- You have WSL setup 
-- If using WSL, you are working from a directory in the **WSL home directory**, not a directory that contains `/mnt/` in it's filename
-
-## Getting Setup
+## Linux/WSL
 :::caution
-Firmware is getting a little bit of an overhaul soon, so these steps are prone to change, they are up to date as of March, 3rd, 2025.
+If you are on Mac, please talk to a lead for setup assistance.
 :::
 
 <Steps>
 1. Run the following command in a directory of your choice to clone the repository:
     ```shell
-    # if you are using https (common)
+    # if you are using HTTPS
     git clone https://github.com/UWOrbital/orbital-software.git
 
     # or if you are using SSH 
@@ -53,7 +48,7 @@ Firmware is getting a little bit of an overhaul soon, so these steps are prone t
     sudo apt install python3-venv
     ```
 
-5. Setup your virtual environment by running the following commands in the repository's root directory (the `orbital-software` folder):
+5. Setup your virtual environment by running the following commands in the repository's root directory:
 
     ```shell
     python3 -m venv .venv
@@ -72,5 +67,5 @@ Firmware is getting a little bit of an overhaul soon, so these steps are prone t
     cd interfaces
     git submodule update --init
     ```
-    We use git submodules to use our interfaces/ repository from this repository. Many builds and includes will not work if the interfaces/ directory is empty (most tasks will not require you to change code related to interfaces/, however it still needs to be set up once). Should you wish to learn about git submodules, https://git-scm.com/book/en/v2/Git-Tools-Submodules is a good resource. 
+    We use git submodules to use our interfaces repository from this repository. Many builds and includes will not work if the interfaces/ directory is empty (most tasks will not require you to change code related to interfaces/, however it still needs to be set up once). Should you wish to learn about git submodules, https://git-scm.com/book/en/v2/Git-Tools-Submodules is a good resource. 
 </Steps>

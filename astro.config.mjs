@@ -62,19 +62,23 @@ export default defineConfig({
           },
           {
             label: 'Firmware',
-            link: '/fw-build/',
+            link: '/fw-setup/',
             icon: 'setting',
             items: [
               {
-                label: 'Build Guides',
+                label: 'Setup',
+                autogenerate: { directory: 'fw-setup'},
+              },
+              {
+                label: 'Build guides',
                 autogenerate: { directory: 'fw-build' },
               },
               {
-                label: 'Comms Guides',
+                label: 'Comms guides',
                 autogenerate: { directory: 'comms' },
               },
               {
-                label: 'FreeRTOS Tasks',
+                label: 'FreeRTOS tasks',
                 autogenerate: { directory: 'tasks' },
               },
             ],
