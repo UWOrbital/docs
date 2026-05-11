@@ -55,7 +55,7 @@ export default defineConfig({
             icon: 'open-book',
             items: [
               {
-                label: 'Start Here',
+                label: 'Start here',
                 autogenerate: { directory: 'start-here' },
               },
             ],
@@ -84,7 +84,7 @@ export default defineConfig({
             ],
           },
           {
-            label: 'Ground Station',
+            label: 'Ground station',
             link: '/gs-setup/',
             icon: 'laptop',
             items: [
@@ -93,11 +93,11 @@ export default defineConfig({
                 autogenerate: { directory: 'gs-setup' },
               },
               {
-                label: 'Frontend Docs',
+                label: 'Frontend docs',
                 autogenerate: { directory: 'frontend' },
               },
               {
-                label: 'Backend Docs',
+                label: 'Backend docs',
                 autogenerate: { directory: 'backend' },
               },
             ],
