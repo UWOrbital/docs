@@ -2,7 +2,7 @@
 title: Adding commands
 description: A guide on how to add commands to the codebase
 sidebar:
-  order: 1
+  order: 2
 ---
 The following is a guide to adding commands to ensure that they work in the python and c sections of this code base. (To navigate quickly, github provides a table of contents via the little list icon on the README header)
 
