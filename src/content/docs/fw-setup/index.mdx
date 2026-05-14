@@ -12,6 +12,17 @@ This guide assumes that you have already read [Initial Setup](/docs/start-here/i
 :::caution
 If you are on Mac, please talk to a lead for setup assistance.
 :::
+:::caution
+    If you still have interfaces as a subdirectory (e.g. from a previous version of main), you will have to delete it. You can run
+    ```shell
+    rm -r interfaces
+    ```
+    Do this before initializing the submodule in the last step. If you have the repo cloned from before the submodule change (5/13/2026), you will have interfaces as a subdirectory. Make sure to remove it so that you can initialize the submodule with the same name.
+    You can check if you have it by using 
+    ```shell
+    ls
+    ```
+:::
 
 <Steps>
 1. Run the following command in a directory of your choice to clone the repository:
@@ -64,8 +75,7 @@ If you are on Mac, please talk to a lead for setup assistance.
 
 7. Use the following to initialize the submodule representing our interfaces repository.
     ```shell
-    cd interfaces
     git submodule update --init
     ```
-    We use git submodules to use our interfaces repository from this repository. Many builds and includes will not work if the interfaces/ directory is empty (most tasks will not require you to change code related to interfaces/, however it still needs to be set up once). Should you wish to learn about git submodules, https://git-scm.com/book/en/v2/Git-Tools-Submodules is a good resource. 
+    We use git submodules to use our interfaces repository from this repository. Many builds and includes will not work if the interfaces/ directory is empty (most tasks will not require you to change code related to interfaces/, however it still needs to be set up once). Should you wish to learn about git submodules, https://git-scm.com/book/en/v2/Git-Tools-Submodules is a good resource.
 </Steps>
