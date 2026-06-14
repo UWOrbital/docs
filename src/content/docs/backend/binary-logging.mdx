@@ -1,0 +1,43 @@
+---
+title: Binary log decoding
+description: Decode compact binary OBC logs on the ground station
+sidebar:
+  order: 2
+---
+
+The satellite can emit logs in a compact binary format (see [Logger](/docs/tasks/logger) for the wire format). The ground station decodes records back to the same text lines the firmware prints in development.
+
+## Decode a binary file
+
+```shell
+cd ground-station
+PYTHONPATH=backend uv run python -m obc_utils.log_codec path/to/log.bin
+```
+
+## Python API
+
+`backend/obc_utils/log_codec.py`:
+
+- `decode_log_stream(data)` — parse a byte stream (resyncs on `0xA8`)
+- `entry_to_text(entry)` — render one record as a text log line
+- `parse_text_log_line(line)` — parse existing text logs (for testing / migration)
+- `encode_log_entry(entry)` — encode back to binary
+
+## File ID mapping
+
+`backend/obc_utils/log_file_ids.json` must match the OBC-firmware build that produced the logs. Regenerate in the firmware repo and copy:
+
+```shell
+# OBC-firmware
+python3 scripts/gen_log_file_ids.py
+cp obc/shared/logging/log_file_ids.json ../ground-station/backend/obc_utils/
+```
+
+## Tests and benchmark
+
+```shell
+uv run pytest backend/python_test/test_obc_utils/test_log_codec.py -v
+PYTHONPATH=backend uv run python backend/obc_utils/benchmark_binary_logs.py
+```
+
+The benchmark reports **encode/decode throughput** and round-trip correctness at scale. Compression ratio is fixed per record type and does not vary with file size.

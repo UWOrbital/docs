@@ -1,8 +1,125 @@
 ---
 title: Logger
-description: The logger
+description: Text and binary log output, wire format, and ground-station decoding
 sidebar:
-  badge:
-    text: WIP
-    variant: caution
+  order: 12
 ---
+
+The logger FreeRTOS task formats log events from the `LOG_*` macros and writes them to UART or SD card. By default output is **human-readable text**. A **compact binary** mode is available to reduce storage and downlink size (issue #479).
+
+## Text format (default)
+
+```
+25-06-09_15-30-01 DEBUG -> obc/app/modules/command_mgr/command_callbacks.c:59 - Executing log downlink command
+25-06-09_15-30-05 ERROR -> obc/app/sys/fs_wrapper/obc_reliance_fs.c:83 - 1001
+```
+
+Fields: optional timestamp, level name, repo-relative file path, line number, then either a message string or a numeric error code.
+
+## Binary format
+
+Each record is self-contained. Multi-byte fields are **little-endian**. Records start with sync byte `0xA8` so the ground station can resync in a byte stream.
+
+| Offset | Size | Field |
+|--------|------|-------|
+| 0 | 1 | Sync byte `0xA8` |
+| 1 | 1 | Flags: bits 0–2 = level, bit 3 = type (0 = error code, 1 = message), bit 4 = has timestamp |
+| 2 | 2 | File ID (index into `log_file_ids.json`) |
+| 4 | 2 | Line number |
+| 6 | 4 | Unix timestamp (only if bit 4 set) |
+| … | 4 | Error code (type = error code) |
+| … | 1 + N | Message length + N bytes (type = message, max 128) |
+
+**Level IDs** match `log_level_t` in `obc_logging.h`: TRACE=0 … FATAL=5.
+
+**File IDs** are build-time indices into a sorted table of every source file that uses `LOG_*` macros. Unknown paths encode as `0xFFFF`.
+
+### Typical sizes
+
+| Record type | Text (approx.) | Binary |
+|-------------|----------------|--------|
+| Error code + timestamp | ~80 bytes | 14 bytes |
+| Short DEBUG message + timestamp | ~100 bytes | ~35 bytes |
+
+Compression ratio is **fixed per record type** — it does not change whether you log 100 or 1 million records. What scales with volume is encode/decode time and total bytes on disk.
+
+Implementation: `obc/shared/logging/obc_logging_codec.c`.
+
+## Enabling binary output
+
+CMake option (see also [CMake options](/docs/fw-build/cmake-options)):
+
+```shell
+cmake .. -DCMAKE_BUILD_TYPE=OBC -DLOG_DEFAULT_OUTPUT_FORMAT=LOG_FORMAT_BINARY
+```
+
+Runtime:
+
+```c
+logSetOutputFormat(LOG_FORMAT_BINARY);
+```
+
+Binary records go to UART or `log.bin` on SD card. Text mode uses `log.log`.
+
+## File ID table
+
+Regenerate when logging source files are added or removed:
+
+```shell
+python3 scripts/gen_log_file_ids.py
+python3 scripts/gen_log_file_ids.py --check   # CI: fail if stale
+```
+
+Outputs:
+
+- `obc/shared/logging/obc_log_file_ids.h` / `.c`
+- `obc/shared/logging/log_file_ids.json`
+
+Copy `log_file_ids.json` to `ground-station/backend/obc_utils/log_file_ids.json` so the ground station can decode file IDs from that firmware build.
+
+## Ground station decoding
+
+See [Binary log decoding](/docs/backend/binary-logging) for the Python decoder and CLI.
+
+**Integration note:** `command_utils.py` `poll()` currently treats UART bytes outside AX.25 frames as UTF-8 text. When the satellite runs binary log mode, that path should run bytes through `decode_log_stream()` first.
+
+## Testing
+
+### Firmware (GoogleTest)
+
+```shell
+cd OBC-firmware
+mkdir -p build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Test && cmake --build . -j
+./test/unit/obc-firmware-tests --gtest_filter='TestLogCodec.*'
+```
+
+### Ground station (pytest)
+
+```shell
+cd ground-station
+uv run pytest backend/python_test/test_obc_utils/test_log_codec.py -v
+```
+
+### Large-scale encode/decode benchmark
+
+Measures throughput and lossless round-trip at 10k / 100k / 1M records (not ratio — that is constant per record type):
+
+```shell
+cd ground-station
+PYTHONPATH=backend uv run python backend/obc_utils/benchmark_binary_logs.py
+```
+
+Example results (Python reference decoder, ~70% messages / ~30% error codes):
+
+| Records | Encode | Decode | Round-trip |
+|---------|--------|--------|------------|
+| 10,000 | ~0.04s (~259k rec/s) | ~0.01s (~733k rec/s) | Full compare |
+| 100,000 | ~0.37s (~269k rec/s) | ~0.14s (~741k rec/s) | Full compare |
+| 1,000,000 | ~3.7s (~272k rec/s) | ~1.6s (~628k rec/s) | Spot-checked |
+
+## Limitations
+
+- Message strings are still stored as bytes (no message-ID table). Savings are largest for error-code-heavy logs.
+- File ID mappings are tied to a firmware build — version `log_file_ids.json` with releases.
+- `LOG_DATE_TIME` timestamps are converted to unix seconds in binary mode.
