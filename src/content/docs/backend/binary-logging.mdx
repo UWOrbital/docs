@@ -36,6 +36,7 @@ cp obc/shared/logging/log_file_ids.json ../ground-station/backend/obc_utils/
 ## Tests and benchmark
 
 ```shell
+cd ground-station
 uv run pytest backend/python_test/test_obc_utils/test_log_codec.py -v
 PYTHONPATH=backend uv run python backend/obc_utils/benchmark_binary_logs.py
 ```

@@ -81,7 +81,7 @@ Copy `log_file_ids.json` to `ground-station/backend/obc_utils/log_file_ids.json`
 
 See [Binary log decoding](/docs/backend/binary-logging) for the Python decoder and CLI.
 
-**Integration note:** `command_utils.py` `poll()` currently treats UART bytes outside AX.25 frames as UTF-8 text. When the satellite runs binary log mode, that path should run bytes through `decode_log_stream()` first.
+**Integration note:** Ground-station UART handling should decode binary log bytes with `decode_log_stream()` when binary log mode is enabled.
 
 ## Testing
 
@@ -110,7 +110,7 @@ cd ground-station
 PYTHONPATH=backend uv run python backend/obc_utils/benchmark_binary_logs.py
 ```
 
-Example results (Python reference decoder, ~70% messages / ~30% error codes):
+Example results (one reference run, Python decoder, ~70% messages / ~30% error codes; numbers vary by machine):
 
 | Records | Encode | Decode | Round-trip |
 |---------|--------|--------|------------|
