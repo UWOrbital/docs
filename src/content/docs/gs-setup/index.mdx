@@ -38,13 +38,14 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
     uv sync --extra dev
     ```
 
-4. (Highly Recommended) If you are working with the database, you should set it up as well. The guide can be found in the section below this one called Database Setup. 
+4. (Highly Recommended) If you are working with the database, you should set it up as well. The guide can be found below in the [Database Setup section](#database-setup). 
 
-5. To run the backend, run the following from the repository root (make sure the venv is activated):
+5. To run the backend, run the following from the repository root:
     ```shell
     # Make sure the db container is running if it isn't already
     docker compose up -d postgres
 
+    # Run the backend server
     uv run fastapi dev backend/main.py
 
     # Or if virtual environment is activated
@@ -68,7 +69,12 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
 <Steps>
 1. Install Docker and Docker Compose with the [official installation guide](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 
-2. Verify the installation by running `docker --version` and `docker-compose --version` in your terminal.
+2. Verify the installation by running the following commands in your terminal.
+
+    ```shell
+    docker --version
+    docker-compose --version
+    ```
 
 3. Make sure you are added to the docker group:
 
@@ -109,8 +115,17 @@ The following assumes that you have already read [Initial Setup](/docs/start-her
     # Go back to the root
     cd ..
     ```
-    Your database should now be setup! Now you can revisit the Backend Setup section and do the remaining steps (Step 5 and 6)
-    To stop the database, run `docker compose down` or `docker stop <container_id>`.
+    Your database should now be setup! Now you can revisit the [Backend Setup section](#backend-setup) and do the remaining steps (Step 5 and 6)
+
+    If you ever want to stop the database, run the following:
+    ```shell
+    # Stops all running containers related to this project
+    docker compose down
+
+    # Alternatively, if you need to keep other containers running, use:
+    docker stop <container_id>
+    # The container_id can be found using `docker ps`
+    ```
 </Steps>
 
 
