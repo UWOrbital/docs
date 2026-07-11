@@ -103,30 +103,83 @@ If multiple exist, try each one.
 Navigate to the root of the orbital repository with the CLI, and run:
 
 ```bash
-python -m gs.backend.gs_cli.ground_station_cli /dev/ttyUSB0
+python -m obc.tools.cli.ground_station_cli /dev/ttyUSB0
 ```
 
 Or:
 
 ```bash
-python -m gs.backend.gs_cli.ground_station_cli /dev/ttyACM0
+python -m obc.tools.cli.ground_station_cli /dev/ttyACM0
 ```
 
-As of May 11, 2026, the module path is:
+As of July 11, 2026, the module path is:
 
 ```text
-gs.backend.gs_cli.ground_station_cli
+obc/tools/cli/ground_station_cli
+
 ```
 
 ---
 
-## 7. Troubleshooting
+## 7. Send a ping command
+
+With the CLI open, you can enter help to see each command. Additionally doing
+```bash
+help {command}
+```
+will list helpful information about the CLI command.
+
+e.g.
+```bash
+help send_command
+```
+Let's try viewing logs. 
+Enter 
+```bash
+start_logging
+```
+then wait a few seconds and send 
+```bash
+print_logs
+```
+This should start printing logs from the board. Now, use 
+```bash
+Ctrl+C
+```
+to exit the polling mode entered by print_logs.
+
+Now let's try sending our first mission command to the board. 
+
+```bash
+send_conn_request
+```
+It should be successful. Only one of these need to be sent per session.
+Enter  
+```bash
+send_command --command CMD_PING
+```
+This should print a response including a SUCCESS! status.
+Note that currently you can not send multiple send_conn_request to the board without resetting it (either using the reset button, or using the CMD_EXEC_OBC_RESET before using Ctrl+C). This means that if you close the CLI and open a new one, you won't be able to send_conn_request and thus you won't be able to use send_command without resetting the board.
+
+:::tip
+Before closing the CLI using Ctrl+C, it is useful to send_command CMD_EXEC_OBC_RESET first so that the board is reset and ready for another send_conn_request to be sent.
+:::
+
+---
+
+## 8. Troubleshooting
 
 If the CLI does not open:
 
 - Try other `/dev/ttyUSB*` or `/dev/ttyACM*` devices.
 - Verify the board is outputting logs using PuTTY on Windows.
 - Re-attach the USB device with `usbipd attach`.
+- Ask a lead for assistance if nothing works.
+
+If the CLI opens but the ping command doesn't work:
+
+- Try other `/dev/ttyUSB*` or `/dev/ttyACM*` devices.
+- Press the PORRST button, then try doing send_conn_request and sending the ping command again in a new CLI instance
 - Ask a lead for assistance if nothing works.
 
 ---
@@ -186,7 +239,7 @@ Now that usbipd is set up, go back and complete the steps.
 ---
 
 # Additional Notes
-
+- If you would like the port to be back on Windows (to use PuTTy, etc.) you can either do usbipd detach, or replug the USB connection to the board.
 - This workflow replaces using PuTTY for UART logging. It also allows you to send commands to the board and see responses.
 - The Ground Station CLI communicates directly over the forwarded USB serial port using UART.
 - If you are using native Linux instead of WSL2, no `usbipd` setup is required.
