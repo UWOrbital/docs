@@ -75,7 +75,7 @@ Outputs:
 - `obc/shared/logging/obc_log_file_ids.h` / `.c`
 - `obc/shared/logging/log_file_ids.json`
 
-Copy `log_file_ids.json` to `ground-station/backend/obc_utils/log_file_ids.json` so the ground station can decode file IDs from that firmware build.
+Copy `log_file_ids.json` to `interfaces/obc_gs_interface/logging/log_file_ids.json` so ground-station consumers can decode file IDs from that firmware build.
 
 ## Ground station decoding
 
@@ -94,11 +94,11 @@ cmake .. -DCMAKE_BUILD_TYPE=Test && cmake --build . -j
 ./test/unit/obc-firmware-tests --gtest_filter='TestLogCodec.*'
 ```
 
-### Ground station (pytest)
+### Shared interfaces codec
 
 ```shell
-cd ground-station
-uv run pytest backend/python_test/test_obc_utils/test_log_codec.py -v
+cd interfaces
+PYTHONPATH=.. python3 -m unittest discover -s tests -p test_log_codec.py -v
 ```
 
 ### Large-scale encode/decode benchmark
@@ -106,8 +106,8 @@ uv run pytest backend/python_test/test_obc_utils/test_log_codec.py -v
 Measures throughput and lossless round-trip at 10k / 100k / 1M records (not ratio — that is constant per record type):
 
 ```shell
-cd ground-station
-PYTHONPATH=backend uv run python backend/obc_utils/benchmark_binary_logs.py
+cd interfaces
+PYTHONPATH=.. python3 -m interfaces.obc_gs_interface.logging.benchmark_binary_logs
 ```
 
 Example results (one reference run, Python decoder, ~70% messages / ~30% error codes; numbers vary by machine):
