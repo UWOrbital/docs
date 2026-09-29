@@ -1,0 +1,44 @@
+---
+title: Binary log decoding
+description: Decode compact binary OBC logs on the ground station
+sidebar:
+  order: 2
+---
+
+The satellite can emit logs in a compact binary format (see [Logger](/docs/tasks/logger) for the wire format). The shared `interfaces` package decodes records back to the same text lines the firmware prints in development.
+
+## Decode a binary file
+
+```shell
+cd interfaces
+PYTHONPATH=.. python3 -m interfaces.obc_gs_interface.logging.log_codec path/to/log.bin
+```
+
+## Python API
+
+`interfaces/obc_gs_interface/logging/log_codec.py`:
+
+- `decode_log_stream(data)` — parse a byte stream (resyncs on `0xA8`)
+- `entry_to_text(entry)` — render one record as a text log line
+- `parse_text_log_line(line)` — parse existing text logs (for testing / migration)
+- `encode_log_entry(entry)` — encode back to binary
+
+## File ID mapping
+
+`interfaces/obc_gs_interface/logging/log_file_ids.json` must match the OBC-firmware build that produced the logs. Regenerate in the firmware repo and copy:
+
+```shell
+# OBC-firmware
+python3 scripts/gen_log_file_ids.py
+cp obc/shared/logging/log_file_ids.json ../interfaces/obc_gs_interface/logging/
+```
+
+## Tests and benchmark
+
+```shell
+cd interfaces
+PYTHONPATH=.. python3 -m unittest discover -s tests -p test_log_codec.py -v
+PYTHONPATH=.. python3 -m interfaces.obc_gs_interface.logging.benchmark_binary_logs
+```
+
+The benchmark reports **encode/decode throughput** and round-trip correctness at scale. Compression ratio is fixed per record type and does not vary with file size.

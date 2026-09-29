@@ -37,6 +37,12 @@ If specified, this removes all optimization flags to debug. Sometimes optimizati
 ### `-DLOG_DEFAULT_LEVEL=`
 Specifies the default level for logs. You can pass any enum in the `obc_logging.h` file to this option.
 
+### `-DLOG_DEFAULT_OUTPUT_FORMAT=`
+Selects text or compact binary log output. See the [Logger](/docs/tasks/logger) guide for the binary wire format.
+
+* **Default** `LOG_FORMAT_TEXT`: Human-readable lines on UART / `log.log` on SD card
+* `LOG_FORMAT_BINARY`: Compact records on UART / `log.bin` on SD card (decoded on the ground station)
+
 ### `-DENABLE_BL_BYPASS=`
 A boolean (takes a 0 or a 1) that specifies whether the app should bypass the bootloader (when you want to flash without the bootloader) to load the app. The boolean values define the following functionality...
 * `0`: The app should not bypass the bootloader and write to the `0x0` address (this is the default address the board looks for to load a program).
