@@ -8,7 +8,7 @@ import { Steps } from '@astrojs/starlight/components';
 
 The following is a simple guide for flashing to the OBC.
 
-There are two main ways to flash to the OBC: **using the bootloader** or **using UniFlash**. UniFlash is the more common way so let's go over that first.
+There are two ways to flash to the OBC: **UniFlash** and **the bootloader**. UniFlash is the more common way (if you're on Windows or macOS) so let's go over that first.
 
 ### Flashing via UniFlash
 <Steps>
@@ -98,17 +98,27 @@ Unfortunately Windows does not pass-through USB ports by default to WSL. Thus, w
 
 ### Flashing via the bootloader
 <Steps>
-1. Use UniFlash to flash the `OBC-bl.out` file, ensuring you have built it for the correct board using the right argument for the `-DBOARD_TYPE=` option.
-2. From the root directory activate the python virtual environment with the following command
+1. Use UniFlash to flash the `OBC-bl.out` file (or have someone do it for you), ensuring you have built it for the correct board using the right argument for the `-DBOARD_TYPE=` option.
+2. [Build the interfaces](/docs/fw-build/build-interfaces.mdx) so the script knows how to communicate with the bootloader.
+3. From the root directory activate the python virtual environment with the following command
 
     ```shell
     source venv/bin/activate
     ```
-3. Navigate to the `obc/tools/python/` directory from root...
+4. Add the current directory as a package so the tools can find the interfaces module:
     ```shell
-    cd obc/tools/python/
+    uv pip install -e .
     ```
-4. Run the app `app_update.py` script specifying a USB port and the absolute file path. The following are some examples.
+    {/*
+    NOTE: this can be avoided by running the tool as a module from the root directory:
+    > python3 -m obc.tools.app_update.app_update /dev/tty123 ...
+    TODO: determine if that's a better solution?
+    */}
+5. Navigate to the `obc/tools/app_update/` directory from root...
+    ```shell
+    cd obc/tools/app_update/
+    ```
+6. Run the app `app_update.py` script specifying a USB port and the absolute file path. The following are some examples.
     ```shell
     # On Linux and WSL
     python3 app_update.py /dev/ttyS0 ~/orbital-software/build_arm/OBC-firmware.bin
@@ -119,5 +129,5 @@ Unfortunately Windows does not pass-through USB ports by default to WSL. Thus, w
     :::note
     The bootloader sends messages through the UART port so if the first string that the script displays is not 'Erase Successful' or the script is takes more than 1 second to start, re-run the script. Hopefully this is addressed in the future!
     :::
-5. Wait for the script to flash and the board should jump to app within 2 seconds of when flashing is completed. If not check the error that is being logged to UART and try again!
+7. Wait for the script to flash and the board should jump to app within 2 seconds of when flashing is completed. If not check the error that is being logged to UART and try again!
 </Steps>

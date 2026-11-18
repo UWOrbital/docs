@@ -1,0 +1,17 @@
+---
+title: Building interfaces
+description: On how to build the interfaces between the OBC and Ground Station.
+---
+
+From the root, cd into the interfaces submodule.
+```bash
+cd interfaces
+```
+Then, do 
+```bash
+mkdir build && cd build
+cmake .. -DBUILD_TYPE=GS
+cmake --build . 
+```
+
+It should be successful (it outputs `[100%] Built target obc-gs-interface`).

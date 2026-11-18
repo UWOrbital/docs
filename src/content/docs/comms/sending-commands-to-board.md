@@ -5,9 +5,15 @@ sidebar:
   order: 1 
 ---
 
-# Connecting to the OBC CLI Through WSL2
+# Connecting to the OBC CLI
 
 This guide explains how to connect to the OBC board CLI through WSL2 or Linux using the Ground Station CLI.
+
+# Prerequisites
+
+Make sure:
+- The firmware is [built](/docs/fw-build/build-obc.mdx) and [flashed](/docs/fw-build/flashing.mdx)
+- [The interfaces are built](/docs/fw-build/build-interfaces.mdx)
 
 ---
 
@@ -98,22 +104,7 @@ If multiple exist, try each one.
 
 ---
 
-## 6. Build interfaces
-
-From the root, cd into the interfaces submodule.
-```bash
-cd interfaces
-```
-Then, do 
-```bash
-mkdir build && cd build
-cmake .. -DCMAKE_BUILD_TYPE=GS
-cmake --build . 
-```
-
----
-
-## 7. Launch the Ground Station CLI
+## 6. Launch the Ground Station CLI
 
 Navigate to the root of the orbital repository with the CLI, and run:
 
@@ -182,7 +173,7 @@ Before closing the CLI using Ctrl+C, it is useful to send_command CMD_EXEC_OBC_R
 
 ---
 
-## 9. Troubleshooting
+## 7. Troubleshooting
 
 If the CLI does not open:
 
